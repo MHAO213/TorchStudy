@@ -23,8 +23,7 @@ input = t.randn(2, 3, 4)
 lstm = nn.LSTMCell(4, 3)
 hx = t.randn(3, 3)
 cx = t.randn(3, 3)
-out = []
-for i in input:
+out = [] in input:
     hx, cx=lstm(i, (hx, cx))
     out.append(hx)
 t.stack(out)
