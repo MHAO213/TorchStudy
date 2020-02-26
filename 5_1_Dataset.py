@@ -1,10 +1,10 @@
 import torch as t
 from torch.utils import data
 import os
-from PIL import  Image
-import numpy as np
+from PIL import Image
 from torchvision import transforms as T
-from torchvision.datasets import ImageFolder
+from torch.utils.data import DataLoader
+from torch.utils.data.dataloader import default_collate
 
 device = t.device("cuda:0" if t.cuda.is_available() else "cpu")
 
@@ -40,5 +40,20 @@ dataset = DogCat(r"e:\TorchStudy\dogs-vs-cats\train", transforms=transform)
 img, label = dataset[0]
 #for img, label in dataset:
 #    print(img.size(), label)
+#dataset = ImageFolder(r"e:\TorchStudy\dogs-vs-cats")
 
-dataset = ImageFolder(r"e:\TorchStudy\dogs-vs-cats")
+
+dataloader = DataLoader(dataset, batch_size=3, shuffle=True, num_workers=0, drop_last=False)
+dataiter = iter(dataloader)
+imgs, labels = next(dataiter)
+#print(imgs.size())
+
+
+#拼接数据
+def my_collate_fn(batch):
+    batch = list(filter(lambda x:x[0] is not None, batch))
+    if len(batch) == 0: return t.Tensor()
+    return default_collate(batch)
+
+dataloader = DataLoader(dataset, 2, collate_fn=my_collate_fn, num_workers=1,shuffle=True)
+
