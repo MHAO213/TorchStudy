@@ -7,7 +7,7 @@ device = t.device("cuda:0" if t.cuda.is_available() else "cpu")
 
 #读取图片
 to_pil = ToPILImage()
-bqb = Image.open(r'HG.png')
+bqb = Image.open(r'../HG.png')
 #bqb.show()
 
 #图片转Tensor
